@@ -2,8 +2,10 @@
 # uses this file as the main entry point of the application.
 
 import data
+from types/tasks import Task
 
 when isMainModule:
-  let tasks = data.getTaskList()
-  for task in tasks:
+  let tsks = data.getTaskList()
+  for task in tsks:
     echo task
+

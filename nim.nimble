@@ -5,7 +5,7 @@ author        = "Aidan Tilgner"
 description   = "A task manager to help keep track of my thoughts"
 license       = "MIT"
 srcDir        = "src"
-bin           = @["nim"]
+bin           = @["main"]
 
 
 # Dependencies

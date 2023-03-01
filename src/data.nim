@@ -1,16 +1,28 @@
-var
-    filename* = "data/tasks.txt"
+from types/tasks import Task
+import json
 
-proc getTaskList*(): seq[string] =
-    var lines = newSeq[string]()
-    iterator fitems(name : string) : string = 
-        let f = open(name)
-        defer: f.close()
-        var line : string
-        while f.read_line(line):
-            yield line
+var
+    filename* = "data/tasks.json"
+
+proc getTaskList*(): seq[Task] =
+    let tasksJson = open(filename)
+    defer: tasksJson.close()
+    let jsonObject = json.parseJson(tasksJson.readAll())
+    let tsks = json.to(jsonObject, seq[Task])
     
-    for s in fitems(filename):
-        lines.add(s)
+    return tsks
+
+proc writeTaskList*(tsks: seq[Task]) =
+    let tasksJson = open(filename, fmWrite)
+    defer: tasksJson.close()
+    let newTasks = %* tsks
+    tasksJson.write(newTasks.pretty())
+
+proc getIndividualTask*(id: int): Task | typeof(nil) =
+    let tsks = getTaskList()
     
-    return lines
+    for task in tsks:
+        if task.id == id:
+            return task
+    
+    return nil
